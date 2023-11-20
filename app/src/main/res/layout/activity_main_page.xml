@@ -16,8 +16,10 @@
                 android:id="@+id/topAppBar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:backgroundTint="@color/buttons_color"
                 app:title="@string/app_name"
-
+                app:titleTextColor="@color/black"
+                app:menu="@menu/navbar_menu"
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 />
 
