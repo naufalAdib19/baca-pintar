@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container_recyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -14,6 +15,7 @@
         android:padding="20dp">
 
         <SearchView
+            android:id="@+id/search_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_white"/>
@@ -26,6 +28,7 @@
         android:layout_height="wrap_content"
         android:padding="20dp"
         android:layout_below="@+id/top_bar_books_category"
+        android:layout_marginBottom="40dp"
         />
 
     <LinearLayout
