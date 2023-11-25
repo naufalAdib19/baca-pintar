@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/containers_main_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/bg_color">
 
     <!-- Top Bar -->
     <LinearLayout
+        android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:gravity="center"
@@ -47,12 +50,15 @@
 
     <!-- Popular Book Section -->
     <LinearLayout
+        android:id="@+id/popular_book"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
         android:paddingLeft="20dp"
         android:paddingRight="30dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_below="@+id/top_bar"
+        android:background="@color/bg_color">
 
         <TextView
             android:layout_width="match_parent"
@@ -163,7 +169,9 @@
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
         android:paddingLeft="20dp"
-        android:paddingRight="30dp">
+        android:paddingRight="30dp"
+        android:layout_below="@+id/popular_book"
+        android:background="@color/bg_color">
 
         <TextView
             android:layout_width="wrap_content"
@@ -175,6 +183,21 @@
     </LinearLayout>
     <!-- End of User Favorite Books -->
 
+    <!-- Bottom Bars -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true">
 
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:menu="@menu/bottom_bar"
+            style="@style/Widget.MaterialComponents.BottomNavigationView"/>
 
-</LinearLayout>
+    </LinearLayout>
+    <!-- End of Bottom Bars -->
+
+</RelativeLayout>
