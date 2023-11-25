@@ -3,6 +3,7 @@ package com.example.baca_pintar;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +39,6 @@ public class BooksCategoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_books_category);
-
         SearchView searchView = (SearchView) findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -58,6 +58,7 @@ public class BooksCategoryActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
     private void getData(String userSearch) {
@@ -74,7 +75,7 @@ public class BooksCategoryActivity extends AppCompatActivity {
                             JSONArray objectOfArray = jsonObject.getJSONArray("items");
                             JSONObject data;
 
-                            //data properties
+                            //data's properties
                             String title = "";
                             List<String> authors;
                             String image = "";
@@ -118,18 +119,5 @@ public class BooksCategoryActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void setDataBooks(JSONObject individualData, List<Item> items) throws Exception {
-        String getThumbnail = individualData.getJSONObject("volumeInfo").getJSONObject("imageLinks").get("thumbnail").toString();
-        String getTitle = individualData.getJSONObject("volumeInfo").get("title").toString();
-        String getId = individualData.get("id").toString();
-
-        List<String> authors = new ArrayList<>();
-        JSONArray authorList = individualData.getJSONObject("volumeInfo").getJSONArray("authors");
-        for(int i = 0; i < authorList.length(); i++) {
-            authors.add(authorList.get(i).toString());
-        }
-
-        items.add(new Item(getThumbnail, getTitle, authors, getId));
-    }
 
 }

@@ -13,8 +13,8 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="150dp"
             android:layout_height="300dp"
-            android:layout_marginBottom="12dp"
-            android:elevation="24dp"
+            android:layout_marginBottom="32dp"
+            app:cardElevation="4dp"
             app:cardCornerRadius="7dp"
             android:theme="@style/Theme.MaterialComponents.Light">
             <LinearLayout
@@ -24,8 +24,8 @@
                 android:paddingTop="14dp"
                 android:paddingRight="10dp"
                 android:paddingLeft="10dp"
-                android:paddingBottom="12dp">
-
+                android:paddingBottom="12dp"
+                android:id="@+id/card">
                 <ImageView
                     android:id="@+id/thumbnail_firstColl"
                     android:layout_width="match_parent"
@@ -48,46 +48,6 @@
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
-
-
-        <!--<com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:elevation="3dp"
-            app:cardCornerRadius="7dp"
-            android:theme="@style/Theme.MaterialComponents.Light">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="14dp"
-                android:paddingRight="10dp"
-                android:paddingLeft="10dp"
-                android:paddingBottom="12dp">
-
-                <ImageView
-                    android:id="@+id/thumbnail_secondColl"
-                    android:layout_width="130dp"
-                    android:layout_height="200dp"
-                    android:background="@color/black"/>
-
-                <TextView
-                    android:id="@+id/title_secondColl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Title"
-                    android:textStyle="bold"
-                    android:textSize="20sp"/>
-
-                <TextView
-                    android:id="@+id/authors_secondColl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Author"/>
-
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>-->
-
 
     </LinearLayout>
 

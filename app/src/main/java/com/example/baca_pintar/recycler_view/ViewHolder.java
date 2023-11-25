@@ -19,10 +19,6 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         thumbnailFirstColl = itemView.findViewById(R.id.thumbnail_firstColl);
         titleFirstColl = itemView.findViewById(R.id.title_firstColl);
         authorsFirstColl = itemView.findViewById(R.id.authors_firstColl);
-
-        //thumbnailSecondColl = itemView.findViewById(R.id.thumbnail_secondColl);
-        //titleSecondColl = itemView.findViewById(R.id.title_secondColl);
-        //authorsSecondColl = itemView.findViewById(R.id.authors_secondColl);
     }
 
 }

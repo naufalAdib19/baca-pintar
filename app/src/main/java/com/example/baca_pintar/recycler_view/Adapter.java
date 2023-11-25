@@ -1,15 +1,22 @@
 package com.example.baca_pintar.recycler_view;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.baca_pintar.BooksCategoryActivity;
+import com.example.baca_pintar.DetailBookActivity;
+import com.example.baca_pintar.MainActivity;
+import com.example.baca_pintar.MainPageActivity;
 import com.example.baca_pintar.R;
 import com.squareup.picasso.Picasso;
 
@@ -44,6 +51,16 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
             Picasso.get().load(items.get(position).getThumbnail()).fit().into(holder.thumbnailFirstColl);
         }
 
+        holder.thumbnailFirstColl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, DetailBookActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("booksId", items.get(holder.getAdapterPosition()).getId());
+                context.startActivity(i);
+            }
+        });
+
         String authorList = "";
         for(int i = 0; i < items.get(position).getAuthors().size(); i++) {
             authorList += items.get(position).getAuthors().get(i);
@@ -54,11 +71,6 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
         holder.authorsFirstColl.setText(authorList);
 
-
-        //if((position + 1) <= (items.size() - 1)) {
-           //holder.titleSecondColl.setText(items.get(position+1).getTitle());
-            //holder.authorsSecondColl.setText(items.get(position+1).getAuthors());
-        //}
     }
 
     @Override
