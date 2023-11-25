@@ -21,6 +21,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.baca_pintar.recycler_view.Adapter;
 import com.example.baca_pintar.recycler_view.Item;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -57,8 +58,6 @@ public class BooksCategoryActivity extends AppCompatActivity {
                 return false; // Return false if you want to perform more actions on text change
             }
         });
-
-
     }
 
     private void getData(String userSearch) {
