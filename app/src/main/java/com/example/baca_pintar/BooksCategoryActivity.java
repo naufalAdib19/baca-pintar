@@ -1,13 +1,16 @@
 package com.example.baca_pintar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.baca_pintar.recycler_view.Adapter;
 import com.example.baca_pintar.recycler_view.Item;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -58,6 +62,21 @@ public class BooksCategoryActivity extends AppCompatActivity {
                 return false; // Return false if you want to perform more actions on text change
             }
         });
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView.getMenu().findItem(R.id.item_2).setChecked(true);
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if(item.getItemId() == R.id.item_1) {
+                    Intent navigateToHome = new Intent(BooksCategoryActivity.this, MainPageActivity.class);
+                    startActivity(navigateToHome);
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
     private void getData(String userSearch) {
