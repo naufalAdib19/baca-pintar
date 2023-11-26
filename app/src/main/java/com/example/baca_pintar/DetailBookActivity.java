@@ -30,17 +30,30 @@ public class DetailBookActivity extends AppCompatActivity {
         setContentView(R.layout.detail_book);
 
         backButton = (ImageView) findViewById(R.id.backButton);
+
+        // set back button listener
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent prevIntent = new Intent(DetailBookActivity.this, BooksCategoryActivity.class);
+                Intent intent = getIntent();
+                Intent prevIntent = null;
+                String prevContext = intent.getExtras().getString("prevContext");
+
+                //conditional intent
+                if(prevContext.equals("MainPage")) {
+                    prevIntent = new Intent(DetailBookActivity.this, MainPageActivity.class);
+                } else {
+                    prevIntent = new Intent(DetailBookActivity.this, BooksCategoryActivity.class);
+                }
                 startActivity(prevIntent);
             }
         });
 
+        //get books id from prev intent
         Intent intent = getIntent();
         String booksId = intent.getExtras().getString("booksId");
 
+        //get books based on booksId
         getBooks(booksId);
     }
 

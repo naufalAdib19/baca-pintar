@@ -10,10 +10,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.baca_pintar.recycler_view.Adapter;
+import com.example.baca_pintar.recycler_view.Item;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.squareup.picasso.Callback;
@@ -25,6 +30,8 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainPageActivity extends AppCompatActivity {
 
@@ -42,6 +49,8 @@ public class MainPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_page);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+        //set click listener on navigation menu
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -54,59 +63,58 @@ public class MainPageActivity extends AppCompatActivity {
             }
         });
 
+        //get data from API
         getData();
     }
 
     private void getData() {
         RequestQueue queue = Volley.newRequestQueue(this);
+        List<Item> myItems = new ArrayList<>();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, dataSource,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://www.googleapis.com/books/v1/volumes?q=laskar&key=AIzaSyAyUF8CxetYl7wHOgbk9ynTMBbkKZlkPVs",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         //Log.e("api", "onResponse" + response.toString());
                         try {
                             JSONObject jsonObject = new JSONObject(response.toString());
-                            JSONArray data = jsonObject.getJSONArray("items");
+                            JSONArray objectOfArray = jsonObject.getJSONArray("items");
+                            JSONObject data;
 
-                            //Set FirstBook Image
-                            firstBook = (JSONObject) data.get(0);
-                            firstBookView = (ImageView) findViewById(R.id.firstBook);
-                            String firstBookImage = firstBook.getJSONObject("volumeInfo").getJSONObject("imageLinks").get("thumbnail").toString().replace("http", "https");
-                            Picasso.get().load(firstBookImage).fit().into(firstBookView);
+                            //data's properties
+                            String title = "";
+                            List<String> authors;
+                            String image = "";
+                            String id = "";
 
-                            //Set First Book title
-                            firstBookTitle = (TextView) findViewById(R.id.firstBookTitle);
-                            String firstBookTitleText = firstBook.getJSONObject("volumeInfo").get("title").toString();
-                            firstBookTitle.setText(firstBookTitleText);
+                            for(int i = 0; i < 2; i++) {
+                                data = (JSONObject) objectOfArray.get(i);
+                                title = !data.getJSONObject("volumeInfo").isNull("title") ? data.getJSONObject("volumeInfo").get("title").toString() : "Untitled";
+                                image = !data.getJSONObject("volumeInfo").isNull("imageLinks") ? data.getJSONObject("volumeInfo").getJSONObject("imageLinks").get("thumbnail").toString().replace("http", "https") : "";
+                                id = data.get("id").toString();
 
-                            //Set First Book Author
-                            TextView firstBookAuthors = (TextView) findViewById(R.id.firstBookAuthor);
-                            JSONArray firstBookAuthorsData = firstBook.getJSONObject("volumeInfo").getJSONArray("authors");
-                            for(int i = 0; i < firstBookAuthorsData.length(); i++) {
-                                firstBookAuthors.setText(firstBookAuthorsData.get(i).toString() + "\n");
+                                JSONArray listAuthor = !data.getJSONObject("volumeInfo").isNull("authors") ? data.getJSONObject("volumeInfo").getJSONArray("authors") : null;
+                                if(listAuthor != null) {
+                                    authors = new ArrayList<>();
+                                    for(int j = 0; j < listAuthor.length(); j++) {
+                                        authors.add(listAuthor.get(j).toString());
+                                    }
+                                } else {
+                                    authors = new ArrayList<>();
+                                    authors.add("unknown");
+                                }
+                                myItems.add(new Item(image, title, authors, id));
                             }
+                            //Log.d("ddd", myItems.get(3).getTitle());
 
-                            //Set Second Image
-                            secondBook = (JSONObject) data.get(1);
-                            ImageView secondBookView = (ImageView) findViewById(R.id.secondBook);
-                            String secondBookImage = secondBook.getJSONObject("volumeInfo").getJSONObject("imageLinks").get("thumbnail").toString().replace("http", "https");
-                            Picasso.get().load(secondBookImage).fit().into(secondBookView);
-
-                            //Set Second Book Title
-                            TextView secondBookTitle = (TextView) findViewById(R.id.secondBookTitle);
-                            String secondBookTitleText = secondBook.getJSONObject("volumeInfo").get("title").toString();
-                            secondBookTitle.setText(secondBookTitleText);
-
-                            //Set Second Book Author
-                            TextView secondBookAuthors = (TextView) findViewById(R.id.secondBookAuthor);
-                            JSONArray secondBookAuthorsData = secondBook.getJSONObject("volumeInfo").getJSONArray("authors");
-                            for(int i = 0; i < secondBookAuthorsData.length(); i++) {
-                                secondBookAuthors.setText(secondBookAuthorsData.get(i).toString());
-                            }
-                            //Log.d("api", "" + firstBookAuthorsData);
+                            //invoke recycler view to recent activity
+                            RecyclerView recyclerView = findViewById(R.id.recyclerView);
+                            recyclerView.setLayoutManager(new GridLayoutManager(MainPageActivity.this, 2));
+                            recyclerView.setAdapter(new Adapter(getApplicationContext(), myItems, "MainPage"));
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
                         }
 
                     }

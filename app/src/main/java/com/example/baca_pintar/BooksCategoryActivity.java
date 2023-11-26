@@ -45,6 +45,8 @@ public class BooksCategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_books_category);
         SearchView searchView = (SearchView) findViewById(R.id.search_view);
+
+        //set search view listener / get user input (bisa berdasarkan nama buku, penulis, dll)
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -63,6 +65,7 @@ public class BooksCategoryActivity extends AppCompatActivity {
             }
         });
 
+        //set navigation menu listener
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.getMenu().findItem(R.id.item_2).setChecked(true);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -120,7 +123,7 @@ public class BooksCategoryActivity extends AppCompatActivity {
                             //Log.d("ddd", myItems.get(3).getTitle());
                             RecyclerView recyclerView = findViewById(R.id.recyclerView);
                             recyclerView.setLayoutManager(new GridLayoutManager(BooksCategoryActivity.this, 2));
-                            recyclerView.setAdapter(new Adapter(getApplicationContext(), myItems));
+                            recyclerView.setAdapter(new Adapter(getApplicationContext(), myItems, "CategoryPage"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (Exception e) {

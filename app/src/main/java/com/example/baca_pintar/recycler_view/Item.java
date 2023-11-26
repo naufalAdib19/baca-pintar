@@ -9,7 +9,7 @@ public class Item {
 
     String thumbnail;
     String title;
-    List<String> authors;
+    List<String>authors;
     String id;
 
     public Item(String thumbnail, String title, List<String> authors, String id) {

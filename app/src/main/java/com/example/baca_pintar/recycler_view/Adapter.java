@@ -26,10 +26,12 @@ import java.util.zip.Inflater;
 public class Adapter extends RecyclerView.Adapter<ViewHolder> {
     Context context;
     List<Item> items;
+    String prevContext;
 
-    public Adapter(Context context, List<Item> items) {
+    public Adapter(Context context, List<Item> items, String prevContext) {
         this.context = context;
         this.items = items;
+        this.prevContext = prevContext;
     }
 
     @NonNull
@@ -40,22 +42,34 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        //Insert data ke component Text View
         holder.titleFirstColl.setText(items.get(position).getTitle());
+
+        //Adjust text size
         if( getTotalWords(items.get(position).getTitle()) <= 7 && getTotalWords(items.get(position).getTitle()) > 4) {
             holder.titleFirstColl.setTextSize(16);
         } else if(getTotalWords(items.get(position).getTitle()) > 7){
             holder.titleFirstColl.setTextSize(12);
         }
 
+        //Load image to component Image View
         if(!items.get(position).getThumbnail().equals("")) {
             Picasso.get().load(items.get(position).getThumbnail()).fit().into(holder.thumbnailFirstColl);
         }
 
+        //set Listener ke component ImageView
         holder.thumbnailFirstColl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, DetailBookActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                if(prevContext.equals("MainPage")) {
+                    i.putExtra("prevContext", "MainPage");
+                } else if(prevContext.equals("CategoryPage")) {
+                    i.putExtra("prevContext", "CategoryPage");
+                }
+
                 i.putExtra("booksId", items.get(holder.getAdapterPosition()).getId());
                 context.startActivity(i);
             }

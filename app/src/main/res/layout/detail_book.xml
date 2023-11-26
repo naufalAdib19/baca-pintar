@@ -75,7 +75,8 @@
                 android:text="Add to Favorite"
                 android:textColor="@color/black"
                 android:backgroundTint="@color/buttons_color"
-                android:layout_below="@+id/detail_book_desc"/>
+                android:layout_below="@+id/detail_book_desc"
+                style="@style/Widget.MaterialComponents.Button.TextButton"/>
 
         </RelativeLayout>
 
