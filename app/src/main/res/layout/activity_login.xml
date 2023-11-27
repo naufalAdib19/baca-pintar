@@ -37,6 +37,7 @@
             android:layout_marginBottom="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/userUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
@@ -52,6 +53,7 @@
             app:endIconDrawable="@drawable/logo_hide">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/userPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"/>
@@ -59,6 +61,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+            android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Login"
