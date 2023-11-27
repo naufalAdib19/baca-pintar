@@ -42,7 +42,6 @@ public class MainPageActivity extends AppCompatActivity {
     JSONObject secondBook;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
