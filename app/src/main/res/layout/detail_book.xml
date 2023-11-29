@@ -56,6 +56,16 @@
                 android:textStyle="bold"
                 android:textSize="24dp"/>
 
+            <TextView
+                android:id="@+id/detail_book_authors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="24dp"
+                android:paddingLeft="24dp"
+                android:text="Lorem ipsum"
+                android:textStyle="italic"
+                android:layout_marginBottom="8dp"
+                android:layout_below="@+id/detail_book_title"/>
 
             <TextView
                 android:id="@+id/detail_book_desc"
@@ -64,17 +74,18 @@
                 android:paddingRight="24dp"
                 android:paddingLeft="24dp"
                 android:text="Lorem ipsum"
-                android:layout_below="@+id/detail_book_title"/>
+                android:layout_below="@+id/detail_book_authors"/>
 
             <Button
+                android:id="@+id/add_to_fav_button"
                 android:layout_width="200dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"
                 android:layout_height="wrap_content"
                 android:text="Add to Favorite"
-                android:textColor="@color/black"
-                android:backgroundTint="@color/buttons_color"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/blue_color"
                 android:layout_below="@+id/detail_book_desc"
                 style="@style/Widget.MaterialComponents.Button.TextButton"/>
 

@@ -39,15 +39,18 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainPageActivity extends AppCompatActivity {
 
-    String dataSource = "https://www.googleapis.com/books/v1/volumes?q=laskar&key=AIzaSyAyUF8CxetYl7wHOgbk9ynTMBbkKZlkPVs";
+    String dataSource = "https://www.googleapis.com/books/v1/volumes?q=subject:popular&key=AIzaSyAyUF8CxetYl7wHOgbk9ynTMBbkKZlkPVs";
     JSONObject firstBook;
     TextView firstBookTitle;
     ImageView firstBookView;
     JSONObject secondBook;
+    UserData userData;
 
 
     @Override
@@ -56,7 +59,7 @@ public class MainPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_page);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-
+        bottomNavigationView.getMenu().findItem(R.id.item_1).setChecked(true);
         //set click listener on navigation menu
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -65,6 +68,9 @@ public class MainPageActivity extends AppCompatActivity {
                     Intent navigateToBooksCat = new Intent(MainPageActivity.this, BooksCategoryActivity.class);
                     startActivity(navigateToBooksCat);
                     return true;
+                } else if(item.getItemId() == R.id.item_3) {
+                    Intent navigateToUserBooks = new Intent(MainPageActivity.this, UserBooksActivity.class);
+                    startActivity(navigateToUserBooks);
                 }
                 return false;
             }
@@ -72,17 +78,13 @@ public class MainPageActivity extends AppCompatActivity {
 
         //get data from API
         getData();
-
-        //get data from user
-
-
     }
 
     private void getData() {
         RequestQueue queue = Volley.newRequestQueue(this);
         List<Item> myItems = new ArrayList<>();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://www.googleapis.com/books/v1/volumes?q=laskar&key=AIzaSyAyUF8CxetYl7wHOgbk9ynTMBbkKZlkPVs",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://www.googleapis.com/books/v1/volumes?q=subject:popular&key=AIzaSyAyUF8CxetYl7wHOgbk9ynTMBbkKZlkPVs",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -98,7 +100,7 @@ public class MainPageActivity extends AppCompatActivity {
                             String image = "";
                             String id = "";
 
-                            for(int i = 0; i < 2; i++) {
+                            for(int i = 0; i < objectOfArray.length(); i++) {
                                 data = (JSONObject) objectOfArray.get(i);
                                 title = !data.getJSONObject("volumeInfo").isNull("title") ? data.getJSONObject("volumeInfo").get("title").toString() : "Untitled";
                                 image = !data.getJSONObject("volumeInfo").isNull("imageLinks") ? data.getJSONObject("volumeInfo").getJSONObject("imageLinks").get("thumbnail").toString().replace("http", "https") : "";

@@ -68,6 +68,7 @@ public class BooksCategoryActivity extends AppCompatActivity {
         //set navigation menu listener
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.getMenu().findItem(R.id.item_2).setChecked(true);
+
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -75,6 +76,9 @@ public class BooksCategoryActivity extends AppCompatActivity {
                     Intent navigateToHome = new Intent(BooksCategoryActivity.this, MainPageActivity.class);
                     startActivity(navigateToHome);
                     return true;
+                } else if(item.getItemId() == R.id.item_3) {
+                    Intent navigateToUserBooks = new Intent(BooksCategoryActivity.this, UserBooksActivity.class);
+                    startActivity(navigateToUserBooks);
                 }
                 return false;
             }

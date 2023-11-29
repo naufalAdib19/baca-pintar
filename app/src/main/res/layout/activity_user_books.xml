@@ -1,36 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/container_recyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        android:id="@+id/top_bar_books_category"
+        android:id="@+id/top_bar_user_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/blue_color"
-        android:padding="24dp">
+        android:padding="16dp"
+        android:background="@color/blue_color">
 
-        <SearchView
-            android:id="@+id/search_view"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_white"/>
+            android:text="Your Book"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="32dp"/>
+
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:layout_below="@+id/top_bar_books_category"
-        android:layout_marginBottom="40dp"
-        />
+        android:layout_below="@+id/top_bar_user_activity"
+        android:paddingRight="8dp"
+        android:paddingLeft="8dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:paddingBottom="44dp">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/user_books_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+
+    <!-- Bottom Bars -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="55dp"
@@ -45,7 +57,6 @@
             style="@style/Widget.MaterialComponents.BottomNavigationView"/>
 
     </LinearLayout>
-
-
+    <!-- End of Bottom Bars -->
 
 </RelativeLayout>

@@ -77,10 +77,15 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
         String authorList = "";
         for(int i = 0; i < items.get(position).getAuthors().size(); i++) {
-            authorList += items.get(position).getAuthors().get(i);
-            if(i != items.get(position).getAuthors().size() - 1) {
-                authorList += ", ";
+            if(i < 1) {
+                authorList += items.get(position).getAuthors().get(i);
             }
+            if (i == 1) {
+                authorList += ", etc";
+            }
+            //if(i != items.get(position).getAuthors().size() - 1) {
+               // authorList += ", ";
+            //}
         }
 
         holder.authorsFirstColl.setText(authorList);

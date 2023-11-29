@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -15,15 +18,37 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.baca_pintar.recycler_view_user.UserItem;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 public class DetailBookActivity extends AppCompatActivity {
     ImageView booksThumbnail, backButton;
-    TextView booksTitle, booksDescription;
+    TextView booksTitle, booksDescription, authorsList;
+
+    //Firebase Config
+    public static FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    public static FirebaseUser user = mAuth.getCurrentUser();
+    public static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public static DocumentReference docRef = db.collection("user").document(user.getUid().toString());
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +94,12 @@ public class DetailBookActivity extends AppCompatActivity {
                             String img = jsonObject.getJSONObject("volumeInfo").getJSONObject("imageLinks").get("thumbnail").toString().replace("http", "https");
                             String title = jsonObject.getJSONObject("volumeInfo").get("title").toString();
                             String desc = jsonObject.getJSONObject("volumeInfo").get("description").toString();
-                            Log.d("adibKeys", title);
+                            String id = jsonObject.get("id").toString();
+                            JSONArray authors = jsonObject.getJSONObject("volumeInfo").getJSONArray("authors");
+                            List<String> listAuthor = new ArrayList<>();
+                            //String authorStringify = authors.toString();
+                            //String setAuthors = authors.length() > 1 ? authorStringify.substring(1, authors.length() - 2) : authorStringify.substring(1, authors.length()-1);
+                            //Log.d("adibKeys", title);
 
                             booksThumbnail = (ImageView) findViewById(R.id.detail_book_image);
                             Picasso.get().load(img).fit().into(booksThumbnail);
@@ -77,8 +107,23 @@ public class DetailBookActivity extends AppCompatActivity {
                             booksTitle = (TextView) findViewById(R.id.detail_book_title);
                             booksTitle.setText(title);
 
+                            authorsList = (TextView) findViewById(R.id.detail_book_authors);
+                            String strings = "";
+                            for(int i = 0; i < authors.length(); i++) {
+                                listAuthor.add(authors.get(i).toString());
+                                strings += authors.get(i).toString();
+                                 if(i < authors.length()-1) {
+                                     strings += ", ";
+                                 }
+                            }
+                            authorsList.setText(strings);
+
                             booksDescription = (TextView) findViewById(R.id.detail_book_desc);
                             booksDescription.setText(desc);
+
+                            UserItem userItem = new UserItem(img, title,listAuthor, id);
+
+                            addBooks(userItem);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -92,6 +137,58 @@ public class DetailBookActivity extends AppCompatActivity {
             }
         });
         queue.add(stringRequest);
+    }
+
+    public void addBooks(UserItem userItems) {
+
+        Button button = (Button) findViewById(R.id.add_to_fav_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists()) {
+                            List<Map<String, Object>> data;
+
+                            if(documentSnapshot.get("userBooks") != null) {
+                                data = (List<Map<String, Object>>) documentSnapshot.get("userBooks");
+                            } else {
+                                data = new ArrayList<>();
+                            }
+
+                            Map<String, Object> mapper = new HashMap<>();
+                            mapper.put("title", userItems.getTitle());
+                            mapper.put("booksID", userItems.getId());
+                            mapper.put("thumbnail", userItems.getThumbnail());
+                            mapper.put("authors", userItems.getAuthors());
+                            data.add(mapper);
+                            rewriteData(data);
+                            Toast.makeText(DetailBookActivity.this, "Success Add Book", Toast.LENGTH_SHORT);
+                            Intent intent = new Intent(DetailBookActivity.this, MainPageActivity.class);
+                            //DetailBookActivity.this.finish();
+                            startActivity(intent);
+                            //Log.d("tesDenDen", data.toString());
+                        }
+                    }
+                });
+
+            }
+        });
+    }
+
+    public void rewriteData(List<Map<String, Object>> userBooks) {
+        docRef.update("userBooks", userBooks).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("userBooks", "Success");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("userBooks", e.toString());
+            }
+        });
     }
 
 }
